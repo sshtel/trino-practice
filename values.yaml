@@ -1,0 +1,53 @@
+server:
+  workers: 1
+  log:
+    trino:
+      level: INFO
+ingress:
+  enabled: false
+serviceAccount:
+  create: true
+  annotations:
+    eks.amazonaws.com/role-arn: FIXME-EKS-ROLE-ARN
+
+envFrom:
+  - secretRef:
+      name: datastore-secret-manager-sa
+
+catalogs:
+  tpch: |
+    connector.name=tpch
+    tpch.splits-per-node=4
+  tpcds: |
+    connector.name=tpcds
+    tpcds.splits-per-node=4
+  objectstore1: |
+    connector.name=iceberg
+    iceberg.catalog.type=jdbc
+    iceberg.jdbc-catalog.catalog-name=objectstore1
+    iceberg.jdbc-catalog.driver-class=org.postgresql.Driver
+    iceberg.jdbc-catalog.connection-url=FIXME
+    iceberg.jdbc-catalog.connection-user=FIXME
+    iceberg.jdbc-catalog.connection-password=FIXME
+    iceberg.jdbc-catalog.default-warehouse-dir=s3://FIXME-AWS-S3
+    fs.native-s3.enabled=true
+    s3.endpoint=https://s3.us-east-1.amazonaws.com
+    s3.region=us-east-1
+    s3.sse.type=s3
+    s3.sts.endpoint=sts.us-east-1.amazonaws.com
+    s3.sts.region=us-east-1
+  objectstore2: |
+    connector.name=iceberg
+    iceberg.catalog.type=jdbc
+    iceberg.jdbc-catalog.catalog-name=objectstore2
+    iceberg.jdbc-catalog.driver-class=org.postgresql.Driver
+    iceberg.jdbc-catalog.connection-url=FIXME
+    iceberg.jdbc-catalog.connection-user=FIXME
+    iceberg.jdbc-catalog.connection-password=FIXME
+    iceberg.jdbc-catalog.default-warehouse-dir=s3://FIXME-AWS-S3
+    fs.native-s3.enabled=true
+    s3.endpoint=https://s3.us-east-1.amazonaws.com
+    s3.region=us-east-1
+    s3.sse.type=s3
+    s3.sts.endpoint=sts.us-east-1.amazonaws.com
+    s3.sts.region=us-east-1
